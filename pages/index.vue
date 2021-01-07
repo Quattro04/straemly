@@ -1,25 +1,23 @@
 <template>
-    <div class="container">
-        <div>
-            <div id="twitch-embed"></div>
+        <div class="flex w-screen h-screen">
+            <div id="twitch-embed" class="w-full"></div>
             <div id="chat-embed">
-                <iframe frameborder="200"
+                <iframe frameborder="0"
                         scrolling="yes"
                         src="https://www.twitch.tv/embed/xqcow/chat?parent=straemly.netlify.app"
-                        height="480"
-                        width="200">
+                        height="100%"
+                        width="340">
                 </iframe>
             </div>
         </div>
-    </div>
 </template>
 
 <script>
 export default {
     mounted() {
         new Twitch.Embed("twitch-embed", {
-            width: 854,
-            height: 480,
+            width: "100%",
+            height: "100%",
             channel: 'xqcow',
             layout: 'video'
             // only needed if your site is also embedded on embed.example.com and othersite.example.com 
