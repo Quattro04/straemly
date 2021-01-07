@@ -5,7 +5,7 @@
             <div id="chat-embed">
                 <iframe frameborder="200"
                         scrolling="yes"
-                        src="https://www.twitch.tv/embed/xqcow/chat?parent=multistream.com"
+                        src="https://www.twitch.tv/embed/xqcow/chat?parent=straemly.netlify.app"
                         height="480"
                         width="200">
                 </iframe>
