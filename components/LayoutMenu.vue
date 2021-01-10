@@ -40,6 +40,37 @@
                     <div class="screen-4 layout-block w-1/2 flex justify-center items-center">3</div>
                     <div class="screen-4 layout-block w-1/2 flex justify-center items-center">4</div>
                 </div>
+                <div class="layout flex w-1/2 flex-wrap p-2" @click="$emit('layout', 7)">
+                    <div class="screen-9 layout-block w-1/3 flex justify-center items-center">1</div>
+                    <div class="screen-9 layout-block w-1/3 flex justify-center items-center">2</div>
+                    <div class="screen-9 layout-block w-1/3 flex justify-center items-center">3</div>
+                    <div class="screen-9 layout-block w-1/3 flex justify-center items-center">4</div>
+                    <div class="screen-9 layout-block w-1/3 flex justify-center items-center">5</div>
+                    <div class="screen-9 layout-block w-1/3 flex justify-center items-center">6</div>
+                    <div class="screen-9 layout-block w-1/3 flex justify-center items-center">7</div>
+                    <div class="screen-9 layout-block w-1/3 flex justify-center items-center">8</div>
+                    <div class="screen-9 layout-block w-1/3 flex justify-center items-center">9</div>
+                </div>
+            </div>
+            <div class="flex h-24">
+                <div class="layout flex w-1/2 flex-wrap p-2" @click="$emit('layout', 8)">
+                    <div class="screen-9 layout-block w-1/4 flex justify-center items-center">1</div>
+                    <div class="screen-9 layout-block w-1/4 flex justify-center items-center">2</div>
+                    <div class="screen-9 layout-block w-1/4 flex justify-center items-center">3</div>
+                    <div class="screen-9 layout-block w-1/4 flex justify-center items-center">4</div>
+                    <div class="screen-9 layout-block w-1/4 flex justify-center items-center">5</div>
+                    <div class="screen-9 layout-block w-1/4 flex justify-center items-center">6</div>
+                    <div class="screen-9 layout-block w-1/4 flex justify-center items-center">7</div>
+                    <div class="screen-9 layout-block w-1/4 flex justify-center items-center">8</div>
+                    <div class="screen-9 layout-block w-1/4 flex justify-center items-center">9</div>
+                    <div class="screen-9 layout-block w-1/4 flex justify-center items-center">10</div>
+                    <div class="screen-9 layout-block w-1/4 flex justify-center items-center">11</div>
+                    <div class="screen-9 layout-block w-1/4 flex justify-center items-center">12</div>
+                    <div class="screen-9 layout-block w-1/4 flex justify-center items-center">13</div>
+                    <div class="screen-9 layout-block w-1/4 flex justify-center items-center">14</div>
+                    <div class="screen-9 layout-block w-1/4 flex justify-center items-center">15</div>
+                    <div class="screen-9 layout-block w-1/4 flex justify-center items-center">16</div>
+                </div>
             </div>
         </div>
     </div>
@@ -71,6 +102,9 @@
     .screen-4:nth-child(3),
     .screen-4:nth-child(4) {
         border-top: 2px solid #060b0e;
+    }
+    .screen-9 {
+        border: 2px solid #060b0e;
     }
     .layout {
         cursor: pointer;

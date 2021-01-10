@@ -1,131 +1,72 @@
 <template>
         <div class="flex justify-center items-center flex-wrap w-screen h-screen">
-            <!-- <div v-for="(stream, idx) in streams" :key="idx" :id="'twitch-embed-' + idx" :class="getWidth + ' ' + getHeight"></div> -->
+            <!-- <div v-for="(stream, idx) in streams" :key="idx" ::id="'twitch-embed-' + idx" :class="getWidth + ' ' + getHeight"></div> -->
             <div v-if="streams.length === 0" class="flex flex-col items-center">
-                <h1 class="title">straemly</h1>
-                <h2 class="subtitle w-3/4 text-center">select the layout by hovering the mouse on the left side of the screen<br>{{'<='}}</h2>
+                <div class="flex">
+                    <h1 class="title">mulstream</h1><span class="title blue">.com</span>
+                </div>
+                <h2 class="subtitle w-3/4 text-center">select the layout by hovering the mouse to the left side of the screen<br>{{'<='}}</h2>
             </div>
             <div v-else class="flex flex-1 h-full">
                 <div v-if="layout === 1" class="flex flex-1">
-                    <div class="stream flex-1 flex justify-center items-center " :class="[{live: streams[0].streaming}]">
-                        <div v-if="streams[0].streamer.length > 0" id="twitch-embed-0" :class="[{'w-full h-full': streams[0].streaming, hidden: !streams[0].streaming}]"></div>
-                        <form class="form" v-if="!streams[0].streaming" @submit.prevent="startStream(0)">
-                            <input class="input" placeholder="Streamer username" v-model="streams[0].streamer"/>
-                            <button v-if="streams[0].streamer.length > 0" class="button">Start</button>
-                        </form>
-                    </div>
+                    <Stream :id="0" :stream="streams[0]" extraClass="flex-1" @submit="startStream" @chatChange="chatChanged" />
                 </div>
                 <div v-if="layout === 2" class="flex flex-1 flex-col">
-                    <div class="stream flex-1 flex justify-center items-center " :class="[{live: streams[0].streaming}]">
-                        <div v-if="streams[0].streamer.length > 0" id="twitch-embed-0" :class="[{'w-full h-full': streams[0].streaming, hidden: !streams[0].streaming}]"></div>
-                        <form class="form" v-if="!streams[0].streaming" @submit.prevent="startStream(0)">
-                            <input class="input" placeholder="Streamer username" v-model="streams[0].streamer"/>
-                            <button v-if="streams[0].streamer.length > 0" class="button">Start</button>
-                        </form>
-                    </div>
-                    <div class="stream flex-1 flex justify-center items-center " :class="[{live: streams[1].streaming}]">
-                        <div v-if="streams[1].streamer.length > 0" id="twitch-embed-1" :class="[{'w-full h-full': streams[1].streaming, hidden: !streams[1].streaming}]"></div>
-                        <form class="form" v-if="!streams[1].streaming" @submit.prevent="startStream(1)">
-                            <input class="input" placeholder="Streamer username" v-model="streams[1].streamer"/>
-                            <button v-if="streams[1].streamer.length > 0" class="button">Start</button>
-                        </form>
-                    </div>
+                    <Stream :id="0" :stream="streams[0]" extraClass="flex-1" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="1" :stream="streams[1]" extraClass="flex-1" @submit="startStream" @chatChange="chatChanged" />
                 </div>
                 <div v-if="layout === 3" class="flex flex-1">
-                    <div class="stream flex-1 flex justify-center items-center " :class="[{live: streams[0].streaming}]">
-                        <div v-if="streams[0].streamer.length > 0" id="twitch-embed-0" :class="[{'w-full h-full': streams[0].streaming, hidden: !streams[0].streaming}]"></div>
-                        <form class="form" v-if="!streams[0].streaming" @submit.prevent="startStream(0)">
-                            <input class="input" placeholder="Streamer username" v-model="streams[0].streamer"/>
-                            <button v-if="streams[0].streamer.length > 0" class="button">Start</button>
-                        </form>
-                    </div>
-                    <div class="stream flex-1 flex justify-center items-center " :class="[{live: streams[1].streaming}]">
-                        <div v-if="streams[1].streamer.length > 0" id="twitch-embed-1" :class="[{'w-full h-full': streams[1].streaming, hidden: !streams[1].streaming}]"></div>
-                        <form class="form" v-if="!streams[1].streaming" @submit.prevent="startStream(1)">
-                            <input class="input" placeholder="Streamer username" v-model="streams[1].streamer"/>
-                            <button v-if="streams[1].streamer.length > 0" class="button">Start</button>
-                        </form>
-                    </div>
+                    <Stream :id="0" :stream="streams[0]" extraClass="flex-1" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="1" :stream="streams[1]" extraClass="flex-1" @submit="startStream" @chatChange="chatChanged" />
                 </div>
                 <div v-if="layout === 4" class="flex flex-1 flex-wrap">
-                    <div class="stream flex-w-full flex-1 flex justify-center items-center " :class="[{live: streams[0].streaming}]">
-                        <div v-if="streams[0].streamer.length > 0" id="twitch-embed-0" :class="[{'w-full h-full': streams[0].streaming, hidden: !streams[0].streaming}]"></div>
-                        <form class="form" v-if="!streams[0].streaming" @submit.prevent="startStream(0)">
-                            <input class="input" placeholder="Streamer username" v-model="streams[0].streamer"/>
-                            <button v-if="streams[0].streamer.length > 0" class="button">Start</button>
-                        </form>
-                    </div>
+                    <Stream :id="0" :stream="streams[0]" extraClass="flex-w-full" @submit="startStream" @chatChange="chatChanged" />
                     <div class="flex flex-w-full">
-                        <div class="stream flex-1 flex justify-center items-center " :class="[{live: streams[1].streaming}]">
-                            <div v-if="streams[1].streamer.length > 0" id="twitch-embed-1" :class="[{'w-full h-full': streams[1].streaming, hidden: !streams[1].streaming}]"></div>
-                            <form class="form" v-if="!streams[1].streaming" @submit.prevent="startStream(1)">
-                                <input class="input" placeholder="Streamer username" v-model="streams[1].streamer"/>
-                                <button v-if="streams[1].streamer.length > 0" class="button">Start</button>
-                            </form>
-                        </div>
-                        <div class="stream flex-1 flex justify-center items-center " :class="[{live: streams[2].streaming}]">
-                            <div v-if="streams[2].streamer.length > 0" id="twitch-embed-2" :class="[{'w-full h-full': streams[2].streaming, hidden: !streams[2].streaming}]"></div>
-                            <form class="form" v-if="!streams[2].streaming" @submit.prevent="startStream(2)">
-                                <input class="input" placeholder="Streamer username" v-model="streams[2].streamer"/>
-                                <button v-if="streams[2].streamer.length > 0" class="button">Start</button>
-                            </form>
-                        </div>
+                        <Stream :id="1" :stream="streams[1]" extraClass="flex-1" @submit="startStream" @chatChange="chatChanged" />
+                        <Stream :id="2" :stream="streams[2]" extraClass="flex-1" @submit="startStream" @chatChange="chatChanged" />
                     </div>
                 </div>
                 <div v-if="layout === 5" class="flex flex-1">
-                    <div class="stream flex-w-half flex justify-center items-center " :class="[{live: streams[0].streaming}]">
-                        <div v-if="streams[0].streamer.length > 0" id="twitch-embed-0" :class="[{'w-full h-full': streams[0].streaming, hidden: !streams[0].streaming}]"></div>
-                        <form class="form" v-if="!streams[0].streaming" @submit.prevent="startStream(0)">
-                            <input class="input" placeholder="Streamer username" v-model="streams[0].streamer"/>
-                            <button v-if="streams[0].streamer.length > 0" class="button">Start</button>
-                        </form>
-                    </div>
+                    <Stream :id="0" :stream="streams[0]" extraClass="flex-w-half" @submit="startStream" @chatChange="chatChanged" />
                     <div class="flex flex-col flex-w-half">
-                        <div class="stream flex-1 flex justify-center items-center " :class="[{live: streams[1].streaming}]">
-                            <div v-if="streams[1].streamer.length > 0" id="twitch-embed-1" :class="[{'w-full h-full': streams[1].streaming, hidden: !streams[1].streaming}]"></div>
-                            <form class="form" v-if="!streams[1].streaming" @submit.prevent="startStream(1)">
-                                <input class="input" placeholder="Streamer username" v-model="streams[1].streamer"/>
-                                <button v-if="streams[1].streamer.length > 0" class="button">Start</button>
-                            </form>
-                        </div>
-                        <div class="stream flex-1 flex justify-center items-center " :class="[{live: streams[2].streaming}]">
-                            <div v-if="streams[2].streamer.length > 0" id="twitch-embed-2" :class="[{'w-full h-full': streams[2].streaming, hidden: !streams[2].streaming}]"></div>
-                            <form class="form" v-if="!streams[2].streaming" @submit.prevent="startStream(2)">
-                                <input class="input" placeholder="Streamer username" v-model="streams[2].streamer"/>
-                                <button v-if="streams[2].streamer.length > 0" class="button">Start</button>
-                            </form>
-                        </div>
+                        <Stream :id="1" :stream="streams[1]" extraClass="flex-1" @submit="startStream" @chatChange="chatChanged" />
+                        <Stream :id="2" :stream="streams[2]" extraClass="flex-1" @submit="startStream" @chatChange="chatChanged" />
                     </div>
                 </div>
                 <div v-if="layout === 6" class="flex flex-1 flex-wrap">
-                    <div class="stream flex-w-half flex justify-center items-center " :class="[{live: streams[0].streaming}]">
-                        <div v-if="streams[0].streamer.length > 0" id="twitch-embed-0" :class="[{'w-full h-full': streams[0].streaming, hidden: !streams[0].streaming}]"></div>
-                        <form class="form" v-if="!streams[0].streaming" @submit.prevent="startStream(0)">
-                            <input class="input" placeholder="Streamer username" v-model="streams[0].streamer"/>
-                            <button v-if="streams[0].streamer.length > 0" class="button">Start</button>
-                        </form>
-                    </div>
-                    <div class="stream flex-w-half flex justify-center items-center " :class="[{live: streams[1].streaming}]">
-                        <div v-if="streams[1].streamer.length > 0" id="twitch-embed-1" :class="[{'w-full h-full': streams[1].streaming, hidden: !streams[1].streaming}]"></div>
-                        <form class="form" v-if="!streams[1].streaming" @submit.prevent="startStream(1)">
-                            <input class="input" placeholder="Streamer username" v-model="streams[1].streamer"/>
-                            <button v-if="streams[1].streamer.length > 0" class="button">Start</button>
-                        </form>
-                    </div>
-                    <div class="stream flex-w-half flex justify-center items-center " :class="[{live: streams[2].streaming}]">
-                        <div v-if="streams[2].streamer.length > 0" id="twitch-embed-2" :class="[{'w-full h-full': streams[2].streaming, hidden: !streams[2].streaming}]"></div>
-                        <form class="form" v-if="!streams[2].streaming" @submit.prevent="startStream(2)">
-                            <input class="input" placeholder="Streamer username" v-model="streams[2].streamer"/>
-                            <button v-if="streams[2].streamer.length > 0" class="button">Start</button>
-                        </form>
-                    </div>
-                    <div class="stream flex-w-half flex justify-center items-center " :class="[{live: streams[3].streaming}]">
-                        <div v-if="streams[3].streamer.length > 0" id="twitch-embed-3" :class="[{'w-full h-full': streams[3].streaming, hidden: !streams[3].streaming}]"></div>
-                        <form class="form" v-if="!streams[3].streaming" @submit.prevent="startStream(3)">
-                            <input class="input" placeholder="Streamer username" v-model="streams[3].streamer"/>
-                            <button v-if="streams[3].streamer.length > 0" class="button">Start</button>
-                        </form>
-                    </div>
+                    <Stream :id="0" :stream="streams[0]" extraClass="flex-w-half" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="1" :stream="streams[1]" extraClass="flex-w-half" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="2" :stream="streams[2]" extraClass="flex-w-half" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="3" :stream="streams[3]" extraClass="flex-w-half" @submit="startStream" @chatChange="chatChanged" />
+                </div>
+                <div v-if="layout === 7" class="flex flex-1 flex-wrap">
+                    <Stream :id="0" :stream="streams[0]" extraClass="flex-w-third" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="1" :stream="streams[1]" extraClass="flex-w-third" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="2" :stream="streams[2]" extraClass="flex-w-third" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="3" :stream="streams[3]" extraClass="flex-w-third" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="4" :stream="streams[4]" extraClass="flex-w-third" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="5" :stream="streams[5]" extraClass="flex-w-third" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="6" :stream="streams[6]" extraClass="flex-w-third" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="7" :stream="streams[7]" extraClass="flex-w-third" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="8" :stream="streams[8]" extraClass="flex-w-third" @submit="startStream" @chatChange="chatChanged" />
+                </div>
+                <div v-if="layout === 8" class="flex flex-1 flex-wrap">
+                    <Stream :id="0" :stream="streams[0]" extraClass="flex-w-quarter" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="1" :stream="streams[1]" extraClass="flex-w-quarter" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="2" :stream="streams[2]" extraClass="flex-w-quarter" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="3" :stream="streams[3]" extraClass="flex-w-quarter" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="4" :stream="streams[4]" extraClass="flex-w-quarter" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="5" :stream="streams[5]" extraClass="flex-w-quarter" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="6" :stream="streams[6]" extraClass="flex-w-quarter" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="7" :stream="streams[7]" extraClass="flex-w-quarter" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="8" :stream="streams[8]" extraClass="flex-w-quarter" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="9" :stream="streams[9]" extraClass="flex-w-quarter" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="10" :stream="streams[10]" extraClass="flex-w-quarter" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="11" :stream="streams[11]" extraClass="flex-w-quarter" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="12" :stream="streams[12]" extraClass="flex-w-quarter" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="13" :stream="streams[13]" extraClass="flex-w-quarter" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="14" :stream="streams[14]" extraClass="flex-w-quarter" @submit="startStream" @chatChange="chatChanged" />
+                    <Stream :id="15" :stream="streams[15]" extraClass="flex-w-quarter" @submit="startStream" @chatChange="chatChanged" />
                 </div>
             </div>
 
@@ -161,85 +102,78 @@ export default {
             switch (layout) {
                 case 1: 
                     this.streams = [
-                        {
-                            streamer: '',
-                            type: 'twitch',
-                            streaming: false
-                        }
+                        { streamer: '', type: 'twitch', chat: true, streaming: false }
                     ]
                     break;
                 case 2:
                 case 3:
                     this.streams = [
-                        {
-                            streamer: '',
-                            type: 'twitch',
-                            streaming: false
-                        },
-                        {
-                            streamer: '',
-                            type: 'twitch',
-                            streaming: false
-                        }
+                        { streamer: '', type: 'twitch', chat: true, streaming: false },
+                        { streamer: '', type: 'twitch', chat: true, streaming: false }
                     ]
                     break;
                 case 4:
                 case 5:
                     this.streams = [
-                        {
-                            streamer: '',
-                            type: 'twitch',
-                            streaming: false
-                        },
-                        {
-                            streamer: '',
-                            type: 'twitch',
-                            streaming: false
-                        },
-                        {
-
-                            streamer: '',
-                            type: 'twitch',
-                            streaming: false
-                        }
+                        { streamer: '', type: 'twitch', chat: true, streaming: false },
+                        { streamer: '', type: 'twitch', chat: true, streaming: false },
+                        { streamer: '', type: 'twitch', chat: true, streaming: false }
                     ]
                     break;
                 case 6: 
                     this.streams = [
-                        {
-                            streamer: '',
-                            type: 'twitch',
-                            streaming: false
-                        },
-                        {
-                            streamer: '',
-                            type: 'twitch',
-                            streaming: false
-                        },
-                        {
-                            streamer: '',
-                            type: 'twitch',
-                            streaming: false
-                        },
-                        {
-                            streamer: '',
-                            type: 'twitch',
-                            streaming: false
-                        }
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false }
+                    ]
+                    break;
+                case 7: 
+                    this.streams = [
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false }
+                    ]
+                    break;
+                case 8: 
+                    this.streams = [
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false },
+                        { streamer: '', type: 'twitch', chat: false, streaming: false }
                     ]
                     break;
             }
             this.layout = layout
         },
+        chatChanged(id) {
+            this.streams[id].chat = !this.streams[id].chat
+        },
         startStream(id) {
-            console.log(JSON.stringify(this.streams))
             this.streams[id].streaming = true;
-            console.log(JSON.stringify(this.streams))
-
             new Twitch.Embed(`twitch-embed-${id}`, {
                 width: "100%",
                 height: "100%",
                 channel: this.streams[id].streamer,
+                layout: this.streams[id].chat ? 'video-with-chat' : 'video'
                 // only needed if your site is also embedded on embed.example.com and othersite.example.com 
                 // parent: ["embed.example.com", "othersite.example.com"]
             });
@@ -290,6 +224,9 @@ export default {
     font-size: 100px;
     letter-spacing: 1px;
     color: #41b883;
+    &.blue {
+        color: #526488;
+    }
 }
 .subtitle {
     font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -323,10 +260,68 @@ export default {
         padding: 12px 25px;
         color: white;
         background-color: #41b883;
-        margin-left: 10px;
         &:focus {
             outline: none;
         }
+    }
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+    .switch input { 
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    input:checked + .slider {
+        background-color: #41b883;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #41b883;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
     }
 }
 </style>

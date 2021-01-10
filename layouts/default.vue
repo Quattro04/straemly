@@ -34,4 +34,10 @@ body {
 .flex-w-half {
     flex: 1 1 50%;
 }
+.flex-w-third {
+    flex: 1 1 33.3%;
+}
+.flex-w-quarter {
+    flex: 1 1 25%;
+}
 </style>
